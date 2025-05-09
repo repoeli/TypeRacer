@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeRacer</title>
+    
+    <!-- Modern UI libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Your custom styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+    <main class="container">
+        <h1>TypeRacer</h1>
+        
+        <!-- Initial setup UI -->
+        <div id="setup-container" class="active">
+            <button id="start-test" class="primary-btn">Start Test</button>
+        </div>
+        
+        <!-- Typing test area -->
+        <div id="test-container" class="hidden">
+            <div id="text-display" class="text-display"></div>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <div class="input-container">
+                <input type="text" id="typing-input" class="typing-input" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+        
+        <!-- Results area -->
+        <div id="results-container" class="hidden">
+            <h2>Your Results</h2>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-value" id="wpm-value">0</span>
+                    <span class="metric-label">WPM</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" id="accuracy-value">0%</span>
+                    <span class="metric-label">Accuracy</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" id="time-value">0s</span>
+                    <span class="metric-label">Time</span>
+                </div>
+            </div>
+            <button id="retry-btn" class="secondary-btn">Try Again</button>
+        </div>
+    </main>
+
+    <!-- Modern JS libraries -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    
+    <!-- Your custom scripts -->
+    <script src="assets/scripts/script.js"></script>
+    <script src="assets/scripts/index.js"></script>
+</body>
+</html>
