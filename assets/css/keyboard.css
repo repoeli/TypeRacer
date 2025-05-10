@@ -1,0 +1,90 @@
+/* Virtual keyboard styles */
+.keyboard-container {
+    width: 100%;
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem 0;
+}
+
+.key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 2px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    color: #1f2937;
+    transition: all 0.1s ease-in-out;
+}
+
+.key.active {
+    background-color: #60a5fa;
+    color: white;
+    border-color: #3b82f6;
+    transform: scale(0.95);
+}
+
+.key.correct {
+    background-color: #34d399;
+    color: white;
+    border-color: #10b981;
+}
+
+.key.incorrect {
+    background-color: #f87171;
+    color: white;
+    border-color: #ef4444;
+}
+
+.key.space {
+    width: 180px;
+}
+
+.key.wide {
+    width: 60px;
+}
+
+.key.wider {
+    width: 80px;
+}
+
+.key.widest {
+    width: 100px;
+}
+
+/* Dark mode adjustments */
+.dark-mode .keyboard-container {
+    background-color: rgba(31, 41, 55, 0.7);
+}
+
+.dark-mode .key {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+}
+
+.dark-mode .key.active {
+    background-color: #3b82f6;
+}
+
+.dark-mode .key.correct {
+    background-color: #059669;
+}
+
+.dark-mode .key.incorrect {
+    background-color: #dc2626;
+}

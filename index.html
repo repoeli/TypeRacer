@@ -1,3 +1,4 @@
+Racer/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,32 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TypeRacer</title>
     
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    
     <!-- Modern UI libraries -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     
     <!-- Your custom styles -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/index-fixed.css">
+    <link rel="stylesheet" href="assets/css/stats.css">
+    <link rel="stylesheet" href="assets/css/keyboard.css">
 </head>
 <body>
     <main class="container">
-        <h1>TypeRacer</h1>
+        <h1 class="animate__animated animate__fadeInDown">TypeRacer</h1>
         
         <!-- Initial setup UI -->
         <div id="setup-container" class="active">
-            <button id="start-test" class="primary-btn">Start Test</button>
+            <!-- Difficulty selection -->
+            <div class="setting-group">
+                <label for="difficulty" class="setting-label">Choose Difficulty:</label>
+                <select id="difficulty" class="setting-select">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+            
+            <!-- Theme selection -->
+            <div class="setting-group">
+                <label for="theme" class="setting-label">Text Theme:</label>
+                <select id="theme" class="setting-select">
+                    <option value="general">General</option>
+                    <option value="code">Programming</option>
+                    <option value="literature">Literature</option>
+                    <option value="quotes">Quotes</option>
+                </select>
+            </div>
+            
+            <!-- Options -->
+            <div class="settings-checkboxes">
+                <div class="setting-checkbox">
+                    <input type="checkbox" id="show-keyboard" checked>
+                    <label for="show-keyboard">Show Virtual Keyboard</label>
+                </div>
+                <div class="setting-checkbox">
+                    <input type="checkbox" id="sound-effects" checked>
+                    <label for="sound-effects">Sound Effects</label>
+                </div>
+            </div>
+            
+            <!-- Start button -->
+            <button id="start-test" class="primary-btn animate__animated animate__pulse animate__infinite animate__slow">Start Test</button>
+            
+            <p class="instruction-text">Press <kbd>Enter</kbd> to start</p>
         </div>
         
         <!-- Typing test area -->
         <div id="test-container" class="hidden">
-            <div id="text-display" class="text-display"></div>
-            <div class="progress-container">
+            <div class="test-header">
+                <div class="test-info">
+                    <span id="timer" class="timer">0s</span>
+                    <span id="current-wpm" class="current-wpm">0 WPM</span>
+                </div>
+                <button id="restart-btn" class="icon-btn" aria-label="Restart test" title="Restart (Ctrl+R)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="text-display" class="text-display" aria-live="polite"></div>
+            
+            <div class="progress-container" aria-hidden="true">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
+            
             <div class="input-container">
-                <input type="text" id="typing-input" class="typing-input" autocomplete="off" spellcheck="false">
+                <input type="text" id="typing-input" class="typing-input" autocomplete="off" spellcheck="false" aria-label="Type the text above here">
             </div>
+            
+            <div class="keyboard-shortcuts">
+                <span><kbd>Ctrl+R</kbd> Restart</span>
+                <span><kbd>Esc</kbd> Quit</span>
+            </div>
+            
+            <!-- Virtual keyboard display -->
+            <div id="keyboard-container" class="keyboard-container"></div>
         </div>
         
         <!-- Results area -->
@@ -49,9 +116,57 @@
                     <span class="metric-value" id="time-value">0s</span>
                     <span class="metric-label">Time</span>
                 </div>
+                <div class="metric">
+                    <span class="metric-value" id="error-value">0</span>
+                    <span class="metric-label">Errors</span>
+                </div>
             </div>
-            <button id="retry-btn" class="secondary-btn">Try Again</button>
+            
+            <!-- Stats section -->
+            <div id="stats-section" class="stats-section">
+                <h3>Your Progress</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-title">Best WPM</span>
+                        <span class="stat-value" id="best-wpm">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Best Accuracy</span>
+                        <span class="stat-value" id="best-accuracy">0%</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Avg. WPM (Last 5)</span>
+                        <span class="stat-value" id="avg-wpm">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Avg. Accuracy (Last 5)</span>
+                        <span class="stat-value" id="avg-accuracy">0%</span>
+                    </div>
+                </div>
+                <div id="chart-container" class="chart-container">
+                    <canvas id="progress-chart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Error visualization (to be implemented later) -->
+            <div id="error-heatmap" class="error-heatmap hidden">
+                <h3>Error Heatmap</h3>
+                <div id="heatmap-container"></div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="retry-btn" class="secondary-btn">Back to Setup</button>
+                <button id="new-test-btn" class="secondary-btn">Try Again</button>
+                <button id="stats-btn" class="secondary-btn">View Details</button>
+            </div>
         </div>
+        
+        <!-- Accessibility features toggle (for future implementation) -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+            </svg>
+        </button>
     </main>
 
     <!-- Modern JS libraries -->
@@ -60,7 +175,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     
     <!-- Your custom scripts -->
-    <script src="assets/scripts/script.js"></script>
+    <script src="assets/scripts/stats.js"></script>
+    <script src="assets/scripts/text-content.js"></script>
+    <script src="assets/scripts/keyboard.js"></script>
+    <script src="assets/scripts/effects.js"></script>
     <script src="assets/scripts/index.js"></script>
 </body>
 </html>
