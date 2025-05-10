@@ -282,13 +282,16 @@ function displayText(text) {
 
 // Check user input against the text
 function checkInput() {
-    if (!testActive) return;
+    if (!testActive) {
+        console.log("Test is no longer active, ignoring input");
+        return;
+    }
     
     const inputText = typingInput.value;
     
-    // If test is already completed, don't process any more input
-    if (!testActive) {
-        console.log("Test is no longer active, ignoring input");
+    // Basic safety check - if no text to compare against, don't proceed
+    if (!currentText || currentText.length === 0) {
+        console.error("No text to check against");
         return;
     }
 
@@ -328,8 +331,11 @@ function checkInput() {
         // If we've typed past the text length, stop checking
         if (i >= characters.length) break;
         
+        // Get character's inner text safely
+        const charText = characters[i].innerText;
+        
         // Check if character is correct
-        if (inputText[i] === characters[i].innerText) {
+        if (inputText[i] === charText) {
             characters[i].classList.add('correct');
             correctCharacters++;
             
@@ -365,7 +371,7 @@ function checkInput() {
     progressBar.style.width = `${progress}%`;
     
     // Check if test is complete (all characters typed correctly)
-    if (correctCharacters === characters.length && inputText.length === characters.length) {
+    if (characters && characters.length > 0 && correctCharacters === characters.length && inputText.length === characters.length) {
         console.log("Test complete! All characters typed correctly.");
         console.log(`Correct characters: ${correctCharacters}, Total characters: ${characters.length}, Input length: ${inputText.length}`);
         
@@ -375,22 +381,26 @@ function checkInput() {
         // Immediately stop the test to ensure accurate timing
         finishTest();
         return; // Exit the function early to prevent further processing
-    } else if (inputText.length === characters.length) {
+    } else if (characters && characters.length > 0 && inputText.length === characters.length) {
         console.log(`Test incomplete: ${correctCharacters} correct out of ${characters.length} characters`);
     }
     
     // Additional check in case the above condition misses the completion
-    if (inputText.length > 0 && inputText.length === currentText.length) {
-        const allCorrect = inputText === currentText;
-        console.log(`Secondary completion check - All correct: ${allCorrect}, Input length: ${inputText.length}, Text length: ${currentText.length}`);
-        
-        if (allCorrect) {
-            // Ensure the timer stops immediately
-            testActive = false;
+    if (inputText.length > 0 && inputText && currentText && inputText.length === currentText.length) {
+        try {
+            const allCorrect = inputText === currentText;
+            console.log(`Secondary completion check - All correct: ${allCorrect}, Input length: ${inputText.length}, Text length: ${currentText.length}`);
             
-            // Finish the test
-            finishTest();
-            return;
+            if (allCorrect) {
+                // Ensure the timer stops immediately
+                testActive = false;
+                
+                // Finish the test
+                finishTest();
+                return;
+            }
+        } catch (error) {
+            console.error("Error in secondary completion check:", error);
         }
     }
 }
