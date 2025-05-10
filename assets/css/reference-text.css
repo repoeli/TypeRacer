@@ -1,0 +1,32 @@
+/* Reference text styles */
+.reference-text {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.25rem;
+    color: #10b981;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    background-color: rgba(16, 185, 129, 0.1);
+    border-radius: 0.5rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Dark mode adjustments */
+.dark-mode .reference-text {
+    background-color: rgba(16, 185, 129, 0.2);
+}
+
+/* Ensure the actual typing characters are still visible */
+.char {
+    display: inline-block;
+    color: #9ca3af;
+}
+
+/* Make the reference text responsive */
+@media (max-width: 640px) {
+    .reference-text {
+        font-size: 1rem;
+        padding: 0.25rem;
+        margin-bottom: 1rem;
+    }
+}

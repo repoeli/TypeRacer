@@ -214,14 +214,18 @@ function startTest() {
     errors = 0;
     timeElapsed = 0;
     totalCharactersTyped = 0;
-    startTime = new Date().getTime();
     testActive = true;
     
-    // Start timer
-    startTimer();
-    
-    if (timer) timer.textContent = "0s";
+    // Timer will now start on first keystroke
+    if (timer) {
+        timer.textContent = "0s";
+        timer.setAttribute('data-tooltip', 'Timer starts when you begin typing');
+        timer.classList.add('waiting-to-start');
+    }
     if (currentWpm) currentWpm.textContent = "0 WPM";
+    
+    // Flag to indicate if timer has started
+    window.timerStarted = false;
     
     console.log("Test started successfully");
 }
@@ -255,7 +259,13 @@ function getRandomText(difficulty, theme) {
 function displayText(text) {
     textDisplay.innerHTML = '';
     
-    // Split text into characters and create spans
+    // First, add the original text in a readable format for reference
+    const referenceText = document.createElement('div');
+    referenceText.innerText = text;
+    referenceText.classList.add('reference-text');
+    textDisplay.appendChild(referenceText);
+    
+    // Split text into characters and create spans for interactive typing
     text.split('').forEach((char, index) => {
         const charSpan = document.createElement('span');
         charSpan.innerText = char;
@@ -275,6 +285,32 @@ function checkInput() {
     if (!testActive) return;
     
     const inputText = typingInput.value;
+    
+    // If test is already completed, don't process any more input
+    if (!testActive) {
+        console.log("Test is no longer active, ignoring input");
+        return;
+    }
+
+    // Start timer on first keystroke
+    if (inputText.length > 0 && !window.timerStarted) {
+        startTimer();
+        window.timerStarted = true;
+        
+        // Remove the waiting-to-start class and tooltip
+        if (timer) {
+            timer.classList.remove('waiting-to-start');
+            timer.removeAttribute('data-tooltip');
+        }
+    } else if (inputText.length === 0 && window.timerStarted) {
+        // If user deletes all their typing, reset the indicator but keep the timer running
+        // We don't want to reset the timer as that would allow cheating
+        if (timer) {
+            timer.classList.remove('waiting-to-start');
+            timer.removeAttribute('data-tooltip');
+        }
+    }
+    
     const characters = textDisplay.querySelectorAll('.char');
     
     // Reset character states
@@ -330,29 +366,70 @@ function checkInput() {
     
     // Check if test is complete (all characters typed correctly)
     if (correctCharacters === characters.length && inputText.length === characters.length) {
+        console.log("Test complete! All characters typed correctly.");
+        console.log(`Correct characters: ${correctCharacters}, Total characters: ${characters.length}, Input length: ${inputText.length}`);
+        
+        // Ensure the timer stops immediately
+        testActive = false;
+        
+        // Immediately stop the test to ensure accurate timing
         finishTest();
+        return; // Exit the function early to prevent further processing
+    } else if (inputText.length === characters.length) {
+        console.log(`Test incomplete: ${correctCharacters} correct out of ${characters.length} characters`);
+    }
+    
+    // Additional check in case the above condition misses the completion
+    if (inputText.length > 0 && inputText.length === currentText.length) {
+        const allCorrect = inputText === currentText;
+        console.log(`Secondary completion check - All correct: ${allCorrect}, Input length: ${inputText.length}, Text length: ${currentText.length}`);
+        
+        if (allCorrect) {
+            // Ensure the timer stops immediately
+            testActive = false;
+            
+            // Finish the test
+            finishTest();
+            return;
+        }
     }
 }
 
 // Finish the test and show results
 function finishTest() {
+    console.log("finishTest() called - stopping timer and calculating results");
+    
+    // Immediately capture the end time for maximum precision
+    endTime = new Date().getTime();
+    
+    // Stop the test and timer - make extra sure the timer is stopped
     testActive = false;
     clearInterval(timerInterval);
-    endTime = new Date().getTime();
-    const timeElapsed = (endTime - startTime) / 1000; // in seconds
+    timerInterval = null;  // Clear the interval reference completely
+    window.timerStarted = false;
     
-    // Calculate WPM: (characters / 5) / minutes
-    const minutes = timeElapsed / 60;
+    // Calculate exact time elapsed with millisecond precision
+    const exactTimeElapsed = (endTime - startTime) / 1000; // in seconds with decimal precision
+    console.log(`Final time: ${exactTimeElapsed.toFixed(2)} seconds`);
+    
+    // Immediately update the timer display to reflect the final time
+    if (timer) {
+        // Update the timer display with the exact final time (to show completion)
+        timer.textContent = `${exactTimeElapsed.toFixed(2)}s`;
+    }
+    
+    // Calculate WPM using the precise time measurement
+    const minutes = exactTimeElapsed / 60;
     const words = currentText.length / 5;
     const wpm = Math.round(words / minutes);
     
     // Calculate accuracy
     const accuracy = Math.round(((totalCharactersTyped - errors) / totalCharactersTyped) * 100);
     
-    // Display results
+    // Display results with improved precision (one decimal place for time)
     wpmValue.textContent = wpm;
     accuracyValue.textContent = `${accuracy}%`;
-    timeValue.textContent = `${timeElapsed.toFixed(1)}s`;
+    timeValue.textContent = `${exactTimeElapsed.toFixed(2)}s`; // Show 2 decimal places for more precision
     errorValue.textContent = errors;
     
     // Show results container, hide test
@@ -373,7 +450,7 @@ function finishTest() {
     // Save results and update statistics
     const difficulty = difficultySelect ? difficultySelect.value : 'beginner';
     const theme = themeSelect ? themeSelect.value : 'general';
-    saveResult(wpm, accuracy, timeElapsed, errors, difficulty, theme);
+    saveResult(wpm, accuracy, exactTimeElapsed, errors, difficulty, theme);
     
     console.log("Test finished with WPM:", wpm);
 }
@@ -399,6 +476,7 @@ function resetTest() {
     errors = 0;
     totalCharactersTyped = 0;
     testActive = false;
+    window.timerStarted = false;
     
     console.log("Test reset complete, showing selectors");
 }
@@ -421,21 +499,50 @@ function handleKeyboardShortcuts(e) {
 function startTimer() {
     clearInterval(timerInterval);
     
+    // Store the precise start time when first character is typed
+    startTime = new Date().getTime();
+    console.log("Timer started at first keystroke");
+    
+    // Calculate and display initial time
+    const currentTime = new Date().getTime();
+    timeElapsed = (currentTime - startTime) / 1000;
+    if (timer) timer.textContent = `${Math.floor(timeElapsed)}s`;
+    if (currentWpm) updateCurrentWpm();
+    
     timerInterval = setInterval(() => {
-        if (testActive) {
-            timeElapsed++;
-            if (timer) timer.textContent = `${timeElapsed}s`;
-            
-            // Update current WPM every second
-            updateCurrentWpm();
+        // Double check that the test is still active
+        if (!testActive) {
+            // If test is not active anymore, clear the interval
+            console.log("Test not active, stopping timer interval");
+            clearInterval(timerInterval);
+            timerInterval = null;
+            return;
         }
-    }, 1000);
+        
+        // Calculate time elapsed in real-time with millisecond precision
+        const currentTime = new Date().getTime();
+        timeElapsed = (currentTime - startTime) / 1000;
+        
+        // Update timer display (showing only whole seconds for cleaner UI during test)
+        if (timer) timer.textContent = `${Math.floor(timeElapsed)}s`;
+        
+        // Update current WPM using precise time measurement
+        updateCurrentWpm();
+        
+        // Safety check - if test has been running too long (5 minutes), stop it
+        if (timeElapsed > (5 * 60)) {
+            console.log("Timer safety: Test has been running for 5 minutes, stopping");
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }, 100); // Update more frequently for better responsiveness
 }
 
 // Update current WPM during the test
 function updateCurrentWpm() {
     if (totalCharactersTyped === 0) return;
     
+    // Use precise timeElapsed for accurate WPM calculation
     const minutes = timeElapsed / 60;
     const words = totalCharactersTyped / 5;
     const wpm = Math.round(words / minutes);
