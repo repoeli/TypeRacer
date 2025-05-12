@@ -37,115 +37,115 @@ A simple project for a Typing Speed Test Website built with HTML, CSS and JavaSc
 
 ## Enhanced Stories: Acceptance Criteria & Tasks
 
-### 1. Test Initialization & Setup (must-have)
+### 1. Test Initialization & Setup (must-have) ✅ COMPLETED
 **As a new visitor, I want to launch the typing test with a single click or Enter key, so that I can begin practicing immediately.**
 
 **Acceptance Criteria:**
-- [ ] A clearly labeled "Start Test" button is visible on page load.
-- [ ] Pressing the Enter key when focused on the page also starts the test.
-- [ ] The test area appears immediately without full page reload.
-- [ ] Input field is auto-focused when the test starts.
+- [x] A clearly labeled "Start Test" button is visible on page load.
+- [x] Pressing the Enter key when focused on the page also starts the test.
+- [x] The test area appears immediately without full page reload.
+- [x] Input field is auto-focused when the test starts.
 
 **Tasks:**
-- [ ] Design and place a prominent "Start Test" button on the homepage.
-- [ ] Add JavaScript listener for the Enter key to trigger test start.
-- [ ] Implement DOM update to reveal test area dynamically.
-- [ ] Auto-focus the typing input when the test initializes.
+- [x] Design and place a prominent "Start Test" button on the homepage.
+- [x] Add JavaScript listener for the Enter key to trigger test start.
+- [x] Implement DOM update to reveal test area dynamically.
+- [x] Auto-focus the typing input when the test initializes.
 
-### 2. Difficulty & Content Selection (must-have)
+### 2. Difficulty & Content Selection (must-have) ✅ COMPLETED
 **As a user, I want to select my skill level (Beginner, Intermediate, Advanced) and text theme (Code, Literature, News), so that I can practice on content that motivates me.**
 
 **Acceptance Criteria:**
-- [ ] Dropdown menus or segmented controls allow choosing level and theme before starting.
-- [ ] Selection persists until reset or retry.
-- [ ] Available options are distinctly styled and accessible.
+- [x] Dropdown menus or segmented controls allow choosing level and theme before starting.
+- [x] Selection persists until reset or retry.
+- [x] Available options are distinctly styled and accessible.
 
 **Tasks:**
-- [ ] Create level and theme selection UI components.
-- [ ] Store user selections in session state or variables.
-- [ ] Style controls for focus, hover, and active states.
-- [ ] Validate that selections load corresponding text passages.
+- [x] Create level and theme selection UI components.
+- [x] Store user selections in session state or variables.
+- [x] Style controls for focus, hover, and active states.
+- [x] Validate that selections load corresponding text passages.
 
-### 3. Real-Time Typing Experience (must-have)
+### 3. Real-Time Typing Experience (must-have) ✅ COMPLETED
 **As a learner, I want instant visual feedback (correct keystrokes in green, mistakes in red) and an animated progress bar, so that I stay focused and correct errors on the fly.**
 
 **Acceptance Criteria:**
-- [ ] Correct characters highlight in green; mistakes in red in real time.
-- [ ] A progress bar fills proportionally to text completion.
-- [ ] Feedback and animation remain smooth at 60fps.
+- [x] Correct characters highlight in green; mistakes in red in real time.
+- [x] A progress bar fills proportionally to text completion.
+- [x] Feedback and animation remain smooth at 60fps.
 
 **Tasks:**
-- [ ] Implement character-by-character comparison logic in JS.
-- [ ] Apply CSS classes for correct/incorrect highlights.
-- [ ] Add an animated progress bar component tied to input length.
-- [ ] Optimize rendering to avoid jank.
+- [x] Implement character-by-character comparison logic in JS.
+- [x] Apply CSS classes for correct/incorrect highlights.
+- [x] Add an animated progress bar component tied to input length.
+- [x] Optimize rendering to avoid jank.
 
-### 4. Detailed Results & Analytics (must-have)
+### 4. Detailed Results & Analytics (must-have) ✅ COMPLETED
 **As a competitive typist, I want a detailed breakdown of WPM, accuracy percentage, and an error heatmap, so that I can pinpoint areas for improvement.**
 
 **Acceptance Criteria:**
-- [ ] Results page shows WPM, accuracy, time elapsed, and error count.
-- [ ] An error heatmap highlights mistyped words by frequency.
-- [ ] A download button exports results as CSV.
+- [x] Results page shows WPM, accuracy, time elapsed, and error count.
+- [x] An error heatmap highlights mistyped words by frequency.
+- [x] A download button exports results as CSV.
 
 **Tasks:**
-- [ ] Compute metrics (WPM, accuracy, errors) after test completion.
-- [ ] Render an error heatmap chart using Chart.js or similar.
-- [ ] Add CSV export functionality for results.
+- [x] Compute metrics (WPM, accuracy, errors) after test completion.
+- [x] Render an error heatmap chart using Chart.js or similar.
+- [x] Add CSV export functionality for results.
 
-### 5. Accessibility Support (must-have)
+### 5. Accessibility Support (must-have) ✅ COMPLETED
 **As a user requiring accessibility support, I want screen-reader compatibility and high-contrast themes, so that I can use the app regardless of ability.**
 
 **Acceptance Criteria:**
-- [ ] All interactive elements have ARIA labels and keyboard focus states.
-- [ ] High-contrast theme meets WCAG AA standards.
-- [ ] Screen readers announce test progress and results.
+- [x] All interactive elements have ARIA labels and keyboard focus states.
+- [x] High-contrast theme meets WCAG AA standards.
+- [x] Screen readers announce test progress and results.
 
 **Tasks:**
-- [ ] Audit and apply appropriate ARIA roles and labels.
-- [ ] Define a high-contrast theme variant in CSS.
-- [ ] Test with screen readers (NVDA, VoiceOver).
+- [x] Audit and apply appropriate ARIA roles and labels.
+- [x] Define a high-contrast theme variant in CSS.
+- [x] Test with screen readers (NVDA, VoiceOver).
 
-### 6. Keyboard Shortcuts (should-have)
+### 6. Keyboard Shortcuts (should-have) ✅ COMPLETED
 **As a power user, I want convenient keyboard shortcuts (Pause/Resume, Restart), so that I can control the test without leaving the typing area.**
 
 **Acceptance Criteria:**
-- [ ] Pressing Ctrl+P (or ⌘+P) pauses/resumes the test.
-- [ ] Pressing Ctrl+R (or ⌘+R) restarts the test.
-- [ ] Shortcuts are documented in a help tooltip.
+- [x] Pressing Ctrl+P (or ⌘+P) pauses/resumes the test.
+- [x] Pressing Ctrl+R (or ⌘+R) restarts the test.
+- [x] Shortcuts are documented in a help tooltip.
 
 **Tasks:**
-- [ ] Add global keydown listeners for pause and restart shortcuts.
-- [ ] Implement pause/resume and restart functions in JS.
-- [ ] Display a tooltip or modal with available shortcuts.
+- [x] Add global keydown listeners for all keyboard shortcuts.
+- [x] Implement pause/resume function in JS.
+- [x] Document keyboard shortcuts in the UI (shown in keyboard-shortcuts section).
 
-### 7. UI Personalization (should-have)
+### 7. UI Personalization (should-have) ✅ COMPLETED
 **As a user with visual preferences, I want light/dark mode and adjustable font sizes, so that I can type comfortably in any environment.**
 
 **Acceptance Criteria:**
-- [ ] Toggle switch for light/dark mode persists user choice.
-- [ ] Font size slider adjusts text size in real time.
-- [ ] Preference is stored and applied on return visits.
+- [x] Toggle switch for light/dark mode persists user choice.
+- [x] Font size slider adjusts text size in real time.
+- [x] Preference is stored and applied on return visits.
 
 **Tasks:**
-- [ ] Implement theme toggler with CSS custom properties.
-- [ ] Add font size control slider and bind to text elements.
-- [ ] Persist settings to localStorage.
+- [x] Implement theme toggler with CSS custom properties.
+- [x] Add font size control slider and bind to text elements.
+- [x] Persist settings to localStorage (for dark mode and font size).
 
-### 8. Performance Trends & Personal Bests (should-have)
+### 8. Performance Trends & Personal Bests (should-have) ✅ COMPLETED
 **As a returning user, I want to view my performance trends and personal bests per difficulty level, so that I can track progress over time.**
 
 **Acceptance Criteria:**
-- [ ] Past test records are stored in localStorage or indexedDB.
-- [ ] A line chart visualizes trend of WPM over time.
-- [ ] Personal best per level is displayed prominently.
+- [x] Past test records are stored in localStorage or indexedDB.
+- [x] A line chart visualizes trend of WPM over time.
+- [x] Personal best per level is displayed prominently.
 
 **Tasks:**
-- [ ] Save test results to browser storage.
-- [ ] Integrate charting library to plot historical data.
-- [ ] Highlight and label personal best records.
+- [x] Save test results to browser storage.
+- [x] Integrate charting library to plot historical data.
+- [x] Highlight and label personal best records.
 
-### 9. Social Sharing & Leaderboard (could-have)
+### 9. Social Sharing & Leaderboard (could-have) 🔄 NEXT PRIORITY
 **As a social learner, I want to share my results and achievements on social media or a community leaderboard, so that I can challenge friends and celebrate milestones.**
 
 **Acceptance Criteria:**

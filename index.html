@@ -22,6 +22,7 @@ Racer/index.html -->
     <link rel="stylesheet" href="assets/css/keyboard.css">
     <link rel="stylesheet" href="assets/css/timer-indicator.css">
     <link rel="stylesheet" href="assets/css/reference-text.css">
+    <link rel="stylesheet" href="assets/css/accessibility.css">
 </head>
 <body>
     <main class="container">
@@ -60,6 +61,21 @@ Racer/index.html -->
                     <input type="checkbox" id="sound-effects" checked>
                     <label for="sound-effects">Sound Effects</label>
                 </div>
+                <div class="setting-checkbox">
+                    <input type="checkbox" id="high-contrast-mode">
+                    <label for="high-contrast-mode">High Contrast Mode</label>
+                </div>
+            </div>
+            
+            <!-- Font Size Control -->
+            <div class="setting-group">
+                <label for="font-size-slider" class="setting-label">Font Size:</label>
+                <div class="font-size-control">
+                    <button id="decrease-font-btn" class="font-size-btn" aria-label="Decrease font size">A-</button>
+                    <input type="range" id="font-size-slider" min="14" max="36" value="18" class="setting-slider" aria-label="Font size slider">
+                    <button id="increase-font-btn" class="font-size-btn" aria-label="Increase font size">A+</button>
+                    <span id="font-size-value">18px</span>
+                </div>
             </div>
             
             <!-- Start button -->
@@ -85,7 +101,7 @@ Racer/index.html -->
             
             <div id="text-display" class="text-display" aria-live="polite"></div>
             
-            <div class="progress-container" aria-hidden="true">
+            <div class="progress-container" role="progressbar" aria-label="Typing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
             
@@ -94,6 +110,7 @@ Racer/index.html -->
             </div>
             
             <div class="keyboard-shortcuts">
+                <span><kbd>Ctrl+P</kbd> Pause/Resume</span>
                 <span><kbd>Ctrl+R</kbd> Restart</span>
                 <span><kbd>Esc</kbd> Quit</span>
             </div>
@@ -181,6 +198,8 @@ Racer/index.html -->
     <script src="assets/scripts/text-content.js"></script>
     <script src="assets/scripts/keyboard.js"></script>
     <script src="assets/scripts/effects.js"></script>
+    <script src="assets/scripts/error-analysis.js"></script>
+    <script src="assets/scripts/accessibility.js"></script>
     <script src="assets/scripts/index.js"></script>
 </body>
 </html>
